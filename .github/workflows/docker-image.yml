@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image DemoPerformance
-      run: docker build . --file Dockerfile --tag DemoPerformance:$(date +%s)
+      run: docker build . --file Dockerfile --tag demoperformance:$(date +%s)
