@@ -2,7 +2,7 @@ resource symbolicname 'Microsoft.Insights/components@2018-05-01-preview' = {
   name: 'string'
   location: 'string'
   tags: {
-    tagName1: 'tagValue1'
+    tagName1: 'tagValue'
     tagName2: 'tagValue2'
   }
   kind: 'string'
