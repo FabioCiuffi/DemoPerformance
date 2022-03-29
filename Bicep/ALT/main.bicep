@@ -1,14 +1,15 @@
+param location string = resourceGroup().location
+
 resource symbolicname 'Microsoft.LoadTestService/loadTests@2021-12-01-preview' = {
-  name: 'string'
-  location: 'string'
+  name: 'DemoPerformanceLoadTesting2'
+  location: location
   tags: {
-    tagName1: 'tagValue1'
-    tagName2: 'tagValue2'
+    DemoPerformance: 'Azure Load Testing'
   }
   identity: {
-    type: 'string'
+    type: 'SystemAssigned'
   }
-  properties: {
-    description: 'string'
-  }
+  // properties: {
+  //   description: 'string'
+  // }
 }
