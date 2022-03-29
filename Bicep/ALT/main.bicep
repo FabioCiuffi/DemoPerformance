@@ -1,4 +1,4 @@
-param location string = resourceGroup().location
+param location string = 'northeurope'
 
 resource symbolicname 'Microsoft.LoadTestService/loadTests@2021-12-01-preview' = {
   name: 'DemoPerformanceLoadTesting2'
