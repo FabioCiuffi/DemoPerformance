@@ -42,25 +42,25 @@ jobs:
           #parameters: storagePrefix=mystore
           failOnStdErr: false
 
-      # # Deploy Bicep file Container registry
-      # - name: deploy
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ACR/main.bicep
-      #     #parameters: storagePrefix=mystore
-      #     failOnStdErr: false
+      # Deploy Bicep file Container registry
+      - name: deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ACR/main.bicep
+          #parameters: storagePrefix=mystore
+          failOnStdErr: false
 
-      # # Deploy Bicep file Kubernetes service
-      # - name: deploy
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/AKS/main.bicep
-      #     #parameters: storagePrefix=mystore
-      #     failOnStdErr: false
+      # Deploy Bicep file Kubernetes service
+      - name: deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/AKS/main.bicep
+          #parameters: storagePrefix=mystore
+          failOnStdErr: false
 
       # Deploy Bicep file Azure Log Analytics
       - name: deploy
@@ -72,15 +72,15 @@ jobs:
           #parameters: storagePrefix=mystore
           failOnStdErr: false
 
-      # # Deploy Bicep file Azure Load Testing
-      # - name: deploy
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALT/main.bicep
-      #     #parameters: storagePrefix=mystore
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Load Testing
+      - name: deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALT/main.bicep
+          #parameters: storagePrefix=mystore
+          failOnStdErr: false
 
       # Runs a single command using the runners shell
       - name: Run a one-line script

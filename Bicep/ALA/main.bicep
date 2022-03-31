@@ -1,5 +1,5 @@
 param location string = resourceGroup().location
-param logAnalyticsWorkspaceName string = 'la-${uniqueString(resourceGroup().id)}'
+param logAnalyticsWorkspaceName string = 'DemoPerformanceLogAnalyticsWorkspace'
 
 var vmInsights = {
   name: 'VMInsights(${logAnalyticsWorkspaceName})'
@@ -10,7 +10,7 @@ var containerInsights = {
   galleryName: 'ContainerInsights'
 }
 
-var environmentName = 'Production'
+var environmentName = 'Demo'
 var costCenterName = 'IT'
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
