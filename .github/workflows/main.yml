@@ -27,50 +27,60 @@ jobs:
       # Checkout code
       - uses: actions/checkout@main
 
-      # Log into Azure
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # # Log into Azure
+      # - uses: azure/login@v1
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy Bicep file Azure Application Insights 
+      # # Deploy Bicep file Azure Application Insights 
+      # - name: deploy
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/AAI/main.bicep
+      #     #parameters: storagePrefix=mystore
+      #     failOnStdErr: false
+
+      # # Deploy Bicep file Container registry
+      # - name: deploy
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/ACR/main.bicep
+      #     #parameters: storagePrefix=mystore
+      #     failOnStdErr: false
+
+      # # Deploy Bicep file Kubernetes service
+      # - name: deploy
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/AKS/main.bicep
+      #     #parameters: storagePrefix=mystore
+      #     failOnStdErr: false
+
+      # Deploy Bicep file Azure Log Analytics
       - name: deploy
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/AAI/main.bicep
+          template: ./Bicep/ALA/main.bicep
           #parameters: storagePrefix=mystore
           failOnStdErr: false
 
-      # Deploy Bicep file Container registry
-      - name: deploy
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/ACR/main.bicep
-          #parameters: storagePrefix=mystore
-          failOnStdErr: false
-
-      # Deploy Bicep file Kubernetes service
-      - name: deploy
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/AKS/main.bicep
-          #parameters: storagePrefix=mystore
-          failOnStdErr: false
-
-      # Deploy Bicep file Azure Load Testing
-      - name: deploy
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/ALT/main.bicep
-          #parameters: storagePrefix=mystore
-          failOnStdErr: false
+      # # Deploy Bicep file Azure Load Testing
+      # - name: deploy
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/ALT/main.bicep
+      #     #parameters: storagePrefix=mystore
+      #     failOnStdErr: false
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
