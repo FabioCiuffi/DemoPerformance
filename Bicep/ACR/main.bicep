@@ -1,7 +1,7 @@
 @minLength(5)
 @maxLength(50)
 @description('Name of the azure container registry (must be globally unique)')
-param acrName string = 'demoperformancecontainerregistry2'
+param acrName string = 'DemoPerformanceContainerRegistry'
 
 @description('Enable an admin user that has push/pull permission to the registry.')
 param acrAdminUserEnabled bool = false
