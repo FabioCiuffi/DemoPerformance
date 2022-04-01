@@ -39,8 +39,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/AAI/main.bicep
-          parameters: name="DemoPerformaceApplicationInsights2" 
-          parameters: location="westeurope"
+          parameters: name="DemoPerformaceApplicationInsights2" location="westeurope"
           failOnStdErr: false
 
       # Deploy Bicep file Container registry
