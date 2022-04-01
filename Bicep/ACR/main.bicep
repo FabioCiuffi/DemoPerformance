@@ -1,7 +1,7 @@
 @minLength(5)
 @maxLength(50)
 @description('Name of the azure container registry (must be globally unique)')
-param acrName string = 'DemoPerformanceContainerRegistry2'
+param name string // ='DemoPerformanceContainerRegistry2'
 
 @description('Enable an admin user that has push/pull permission to the registry.')
 param acrAdminUserEnabled bool = false
@@ -19,11 +19,11 @@ param acrSku string = 'Basic'
 
 // azure container registry
 resource acr 'Microsoft.ContainerRegistry/registries@2019-12-01-preview' = {
-  name: acrName
+  name: name
   location: location
   tags: {
     displayName: 'Container Registry'
-    'container.registry': acrName
+    'container.registry': name
   }
   sku: {
     name: acrSku
@@ -34,3 +34,4 @@ resource acr 'Microsoft.ContainerRegistry/registries@2019-12-01-preview' = {
 }
 
 output acrLoginServer string = acr.properties.loginServer
+
