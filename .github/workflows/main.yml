@@ -32,27 +32,25 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy Bicep file Azure Application Insights 
-      - name: Deploy Bicep file Azure Application Insights 
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/AAI/main.bicep
-          parameters: name="DemoPerformaceApplicationInsights2" location="westeurope"
-          failOnStdErr: false
+      # # Deploy Bicep file Azure Application Insights 
+      # - name: Deploy Bicep file Azure Application Insights 
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/AAI/main.bicep
+      #     parameters: name="DemoPerformaceApplicationInsights2" location="westeurope"
+      #     failOnStdErr: false
 
-      # Deploy Bicep file Container registry
-      - name: Deploy Bicep file Container registry
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/ACR/main.bicep
-          parameters: name="DemoPerformanceContainerRegistry2"
-          failOnStdErr: false
-
-
+      # # Deploy Bicep file Container registry
+      # - name: Deploy Bicep file Container registry
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/ACR/main.bicep
+      #     parameters: name="DemoPerformanceContainerRegistry2"
+      #     failOnStdErr: false
 
 
 
@@ -66,7 +64,7 @@ jobs:
           username: DemoPerformanceContainerRegistry2
           password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
       - run: |
-          docker build . -t demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
+          docker build src/helloworld-service/HelloWorld.API/Dockerfile -t demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
           docker push demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
 
       - name: 'Deploy to Azure Container Instances'
@@ -77,7 +75,7 @@ jobs:
           image: demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
           registry-login-server: demoperformancecontainerregistry2.azurecr.io
           registry-username: DemoPerformanceContainerRegistry2
-          registry-password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: aci-sampleapp
           location: 'westeurope'
 
@@ -87,35 +85,35 @@ jobs:
 
 
 
-      # Deploy Bicep file Kubernetes service
-      - name: Deploy Bicep file Kubernetes service
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/AKS/main.bicep
-          parameters: name="DemoPerformanceAKSCluster2"
-          failOnStdErr: false
+      # # Deploy Bicep file Kubernetes service
+      # - name: Deploy Bicep file Kubernetes service
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/AKS/main.bicep
+      #     parameters: name="DemoPerformanceAKSCluster2"
+      #     failOnStdErr: false
 
-      # Deploy Bicep file Azure Log Analytics
-      - name: Deploy Bicep file Azure Log Analytics
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/ALA/main.bicep
-          parameters: name="DemoPerformanceLogAnalyticsWorkspace2" location="westeurope"
-          failOnStdErr: false
+      # # Deploy Bicep file Azure Log Analytics
+      # - name: Deploy Bicep file Azure Log Analytics
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/ALA/main.bicep
+      #     parameters: name="DemoPerformanceLogAnalyticsWorkspace2" location="westeurope"
+      #     failOnStdErr: false
 
-      # Deploy Bicep file Azure Load Testing
-      - name: Deploy Bicep file Azure Load Testing
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/ALT/main.bicep
-          parameters: name="DemoPerformanceLoadTesting2" location="northeurope"
-          failOnStdErr: false
+      # # Deploy Bicep file Azure Load Testing
+      # - name: Deploy Bicep file Azure Load Testing
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/ALT/main.bicep
+      #     parameters: name="DemoPerformanceLoadTesting2" location="northeurope"
+      #     failOnStdErr: false
 
       # Runs a single command using the runners shell
       - name: Run a one-line script

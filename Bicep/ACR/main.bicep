@@ -4,7 +4,7 @@
 param name string // ='DemoPerformanceContainerRegistry2'
 
 @description('Enable an admin user that has push/pull permission to the registry.')
-param acrAdminUserEnabled bool = false
+param acrAdminUserEnabled bool = true
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
