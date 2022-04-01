@@ -83,37 +83,35 @@ jobs:
 
 
 
-      # # Deploy Bicep file Kubernetes service
-      # - name: Deploy Bicep file Kubernetes service
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/AKS/main.bicep
-      #     parameters: name="DemoPerformanceAKSCluster2"
-      #     failOnStdErr: false
+      # Deploy Bicep file Kubernetes service
+      - name: Deploy Bicep file Kubernetes service
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/AKS/main.bicep
+          parameters: name="DemoPerformanceAKSCluster2"
+          failOnStdErr: false
 
-      # # Deploy Bicep file Azure Log Analytics
-      # - name: Deploy Bicep file Azure Log Analytics
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALA/main.bicep
-      #     parameters: name="DemoPerformanceLogAnalyticsWorkspace2"
-      #     parameters: location="westeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Log Analytics
+      - name: Deploy Bicep file Azure Log Analytics
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALA/main.bicep
+          parameters: name="DemoPerformanceLogAnalyticsWorkspace2" location="westeurope"
+          failOnStdErr: false
 
-      # # Deploy Bicep file Azure Load Testing
-      # - name: Deploy Bicep file Azure Load Testing
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALT/main.bicep
-      #     parameters: name="DemoPerformanceLoadTesting2"
-      #     parameters: location="westeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Load Testing
+      - name: Deploy Bicep file Azure Load Testing
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALT/main.bicep
+          parameters: name="DemoPerformanceLoadTesting2" location="westeurope"
+          failOnStdErr: false
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
