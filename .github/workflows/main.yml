@@ -56,28 +56,32 @@ jobs:
 
 
 
-      # # Build and push image 
-      # - name: 'Build and push image'
-      #   uses: azure/docker-login@v1
-      #   with:
-      #     login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-      #     username: ${{ secrets.REGISTRY_USERNAME }}
-      #     password: ${{ secrets.REGISTRY_PASSWORD }}
-      # - run: |
-      #     docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
-      #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
 
-      # - name: 'Deploy to Azure Container Instances'
-      #   uses: 'azure/aci-deploy@v1'
-      #   with:
-      #     resource-group: ${{ secrets.RESOURCE_GROUP }}
-      #     dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
-      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
-      #     registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
-      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-      #     name: aci-sampleapp
-      #     location: 'west us'
+
+      # Build and push image 
+      - name: 'Build and push image'
+        uses: azure/docker-login@v1
+        with:
+          login-server: demoperformancecontainerregistry2.azurecr.io
+          username: DemoPerformanceContainerRegistry2
+          password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
+      - run: |
+          docker build . -t demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
+          docker push demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
+
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.AZURE_RG }}
+          dns-name-label: ${{ secrets.AZURE_RG }}${{ github.run_number }}
+          image: demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
+          registry-login-server: demoperformancecontainerregistry2.azurecr.io
+          registry-username: DemoPerformanceContainerRegistry2
+          registry-password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
+          name: aci-sampleapp
+          location: 'westeurope'
+
+
 
 
 
@@ -110,7 +114,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ALT/main.bicep
-          parameters: name="DemoPerformanceLoadTesting2" location="westeurope"
+          parameters: name="DemoPerformanceLoadTesting2" location="northeurope"
           failOnStdErr: false
 
       # Runs a single command using the runners shell
