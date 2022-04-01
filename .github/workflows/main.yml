@@ -72,6 +72,16 @@ jobs:
           #parameters: storagePrefix=mystore
           failOnStdErr: false
 
+     # Deploy Bicep file Azure Log Analytics
+      - name: deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALA/main.bicep
+          #parameters: storagePrefix=mystore
+          failOnStdErr: false
+
       # Deploy Bicep file Azure Load Testing
       - name: deploy
         uses: azure/arm-deploy@v1
