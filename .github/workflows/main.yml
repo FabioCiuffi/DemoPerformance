@@ -100,10 +100,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ALA/main.bicep
-          parameters: {
-                        name='DemoPerformanceLogAnalyticsWorkspace',
-                        location='westeurope'
-                      }
+          parameters: name='DemoPerformanceLogAnalyticsWorkspace',location='westeurope'
           failOnStdErr: false
 
       # Deploy Bicep file Azure Load Testing
@@ -113,10 +110,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ALT/main.bicep
-          parameters: {
-                        name='DemoPerformanceLoadTesting',
-                        location='westeurope'
-                      }
+          parameters: name='DemoPerformanceLoadTesting',location='westeurope'
           failOnStdErr: false
 
       # Runs a single command using the runners shell
