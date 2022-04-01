@@ -39,7 +39,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/AAI/main.bicep
-          parameters: name="DemoPerformaceApplicationInsights" 
+          parameters: name="DemoPerformaceApplicationInsights2" 
           parameters: location="westeurope"
           failOnStdErr: false
 
@@ -91,7 +91,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/AKS/main.bicep
-          parameters: name="DemoPerformanceAKSCluster"
+          parameters: name="DemoPerformanceAKSCluster2"
           failOnStdErr: false
 
       # Deploy Bicep file Azure Log Analytics
@@ -101,7 +101,8 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ALA/main.bicep
-          parameters: name="DemoPerformanceLogAnalyticsWorkspace" location="westeurope"
+          parameters: name="DemoPerformanceLogAnalyticsWorkspace2"
+          parameters: location="westeurope"
           failOnStdErr: false
 
       # Deploy Bicep file Azure Load Testing
@@ -111,7 +112,8 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ALT/main.bicep
-          parameters: name="DemoPerformanceLoadTesting" location="westeurope"
+          parameters: name="DemoPerformanceLoadTesting2"
+          parameters: location="westeurope"
           failOnStdErr: false
 
       # Runs a single command using the runners shell
