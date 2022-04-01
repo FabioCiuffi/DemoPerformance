@@ -1,6 +1,6 @@
 @description('Name of the log analytics workspace')
 param logAnalyticsName string = 'DemoPerformanceLogAnalyticsWorkspace'
-param location string = resourceGroup().location
+param location string = 'westeurope' //resourceGroup().location
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   name: logAnalyticsName
