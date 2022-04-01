@@ -50,7 +50,7 @@ jobs:
       #     resourceGroupName: ${{ secrets.AZURE_RG }}
       #     template: ./Bicep/ACR/main.bicep
       #     parameters: name="DemoPerformanceContainerRegistry2"
-      #     failOnStdErr: false
+      #     failOnStdErr: false ff
 
 
 
