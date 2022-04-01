@@ -64,6 +64,7 @@ jobs:
           username: DemoPerformanceContainerRegistry2
           password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
       - run: |
+          az acr login --name "demoperformancecontainerregistry2"
           docker build src/helloworld-service/HelloWorld.API/ -t demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
           docker push demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
 
