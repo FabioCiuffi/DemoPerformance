@@ -49,7 +49,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ACR/main.bicep
-          #parameters: storagePrefix=mystore
+          #parameters: storagePrefix= mystore
           failOnStdErr: false
 
       # Deploy Bicep file Kubernetes service
