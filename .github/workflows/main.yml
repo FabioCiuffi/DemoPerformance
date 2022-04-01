@@ -76,7 +76,7 @@ jobs:
           image: demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
           registry-login-server: demoperformancecontainerregistry2.azurecr.io
           registry-username: DemoPerformanceContainerRegistry2
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          registry-password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
           name: aci-sampleapp
           location: 'westeurope'
 
