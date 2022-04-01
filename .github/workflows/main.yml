@@ -64,7 +64,7 @@ jobs:
           username: DemoPerformanceContainerRegistry2
           password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
       - run: |
-          docker build src/helloworld-service/HelloWorld.API/Dockerfile -t demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
+          docker build src/helloworld-service/HelloWorld.API/ -t demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
           docker push demoperformancecontainerregistry2.azurecr.io/sampleapp:${{ github.sha }}
 
       - name: 'Deploy to Azure Container Instances'
