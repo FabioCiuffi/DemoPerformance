@@ -33,7 +33,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Deploy Bicep file Azure Application Insights 
-      - name: deploy
+      - name: Deploy Bicep file Azure Application Insights 
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -43,7 +43,7 @@ jobs:
           failOnStdErr: false
 
       # Deploy Bicep file Container registry
-      - name: deploy
+      - name: Deploy Bicep file Container registry
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -53,7 +53,7 @@ jobs:
           failOnStdErr: false
 
       # Deploy Bicep file Kubernetes service
-      - name: deploy
+      - name: Deploy Bicep file Kubernetes service
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -63,17 +63,7 @@ jobs:
           failOnStdErr: false
 
       # Deploy Bicep file Azure Log Analytics
-      - name: deploy
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/ALA/main.bicep
-          #parameters: storagePrefix=mystore
-          failOnStdErr: false
-
-     # Deploy Bicep file Azure Log Analytics
-      - name: deploy
+      - name: Deploy Bicep file Azure Log Analytics
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -83,7 +73,7 @@ jobs:
           failOnStdErr: false
 
       # Deploy Bicep file Azure Load Testing
-      - name: deploy
+      - name: Deploy Bicep file Azure Load Testing
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
