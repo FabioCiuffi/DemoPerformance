@@ -6,7 +6,6 @@ env:
   APPPREFIX: ""
   APPNAME: "DemoPerformance"
   APPSUFFIX: "2"
-  ContainerRegistryName: "${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
 
 # Controls when the workflow will run
 on:
@@ -30,6 +29,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     
+      - name: Set env object varibles names
+        run: echo ::set-env ContainerRegistryName="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
+      - name: ContainerRegistryName value
+        run: echo $ContainerRegistryName
+
       # Checkout code
       - name: Checkout code
         uses: actions/checkout@main
@@ -57,8 +61,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ACR/main.bicep
-          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
-          parameters: name="${{ env.ContainerRegistryName }}
+          parameters: name="${{ env.ContainerRegistryName }}"
           failOnStdErr: false 
 
       # # Build and push image 
