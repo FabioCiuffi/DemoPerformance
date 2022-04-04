@@ -2,11 +2,11 @@ name: CI
 
 # This is a basic workflow to help you get started with Actions
 # Global Variables
-data:
-  AppPrefix: ""
-  AppName: "DemoPerformance"
-  AppSuffix: "2"
-  
+env:
+  APPPREFIX: ""
+  APPNAME: "DemoPerformance"
+  APPSUFFIX: "2"
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -44,7 +44,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/AAI/main.bicep
-          parameters: name="{{ AppPrefix }}{{ AppName }}ApplicationInsights{{ AppSuffix }}" location="westeurope"
+          parameters: name="$APPPREFIX$APPNAMEApplicationInsights$APPSUFFIX" location="westeurope"
           failOnStdErr: false
 
       # Deploy Bicep file Container registry
@@ -54,7 +54,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ACR/main.bicep
-          parameters: name="{{ AppPrefix }}{{ AppName }}ContainerRegistry{{ AppSuffix }}"
+          parameters: name="$APPPREFIX$APPNAMEContainerRegistry$APPSUFFIX"
           failOnStdErr: false 
 
       # # Build and push image 
