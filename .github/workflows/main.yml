@@ -61,7 +61,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ACR/main.bicep
-          parameters: name=$ContainerRegistryName
+          parameters: name=${{ ContainerRegistryName }}
           failOnStdErr: false 
 
       # # Build and push image 
