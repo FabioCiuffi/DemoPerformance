@@ -29,10 +29,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     
-      - name: Set env object varibles names
-        run: echo ::set-env ContainerRegistryName="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
-      - name: ContainerRegistryName value
-        run: echo $ContainerRegistryName
+      # - name: Set env object varibles names
+      #   run: echo ::set-env ContainerRegistryName="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
+      # - name: ContainerRegistryName value
+      #   run: echo $ContainerRegistryName
 
       # Checkout code
       - name: Checkout code
@@ -61,7 +61,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ACR/main.bicep
-          parameters: name=${{ env.ContainerRegistryName }}
+          parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
           failOnStdErr: false 
 
       # # Build and push image 
@@ -88,42 +88,42 @@ jobs:
       #     name: DemoPerformanceApp
       #     location: 'westeurope'
 
-      # # Deploy Bicep file Kubernetes service
-      # - name: Deploy Bicep file Kubernetes service
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/AKS/main.bicep
-      #     parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}"
-      #     failOnStdErr: false
+      # Deploy Bicep file Kubernetes service
+      - name: Deploy Bicep file Kubernetes service
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/AKS/main.bicep
+          parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}"
+          failOnStdErr: false
 
-      # # Deploy Bicep file Azure Log Analytics
-      # - name: Deploy Bicep file Azure Log Analytics
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALA/main.bicep
-      #     parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LogAnalyticsWorkspace${{ env.APPSUFFIX }}" location="westeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Log Analytics
+      - name: Deploy Bicep file Azure Log Analytics
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALA/main.bicep
+          parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LogAnalyticsWorkspace${{ env.APPSUFFIX }}" location="westeurope"
+          failOnStdErr: false
 
-      # # Deploy Bicep file Azure Load Testing
-      # - name: Deploy Bicep file Azure Load Testing
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALT/main.bicep
-      #     parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LoadTesting${{ env.APPSUFFIX }}" location="northeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Load Testing
+      - name: Deploy Bicep file Azure Load Testing
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALT/main.bicep
+          parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LoadTesting${{ env.APPSUFFIX }}" location="northeurope"
+          failOnStdErr: false
 
-      # # Runs a single command using the runners shell
-      # - name: Run a one-line script
-      #   run: az version
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: az version
 
-      # # Runs a set of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
