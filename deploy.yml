@@ -12,6 +12,8 @@ spec:
       labels:
         app: DemoPerformance
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: DemoPerformance
         image: demoperformancecontainerregistry2.azurecr.io/demoperformanceapp
@@ -24,3 +26,16 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demoperformanceapp
+  labels:
+    run: demoperformanceapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: DemoPerformance

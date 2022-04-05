@@ -6,6 +6,8 @@ env:
   APPPREFIX: ""
   APPNAME: "DemoPerformance"
   APPSUFFIX: "2"
+  #AzureApplicationInsightsName: "${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
+  #ContainerRegistryName: "${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
   #ContainerRegistryName: "${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
 
 # Controls when the workflow will run
@@ -104,8 +106,22 @@ jobs:
 
       - name: Deploy Container registry image to Kubernetes service
         run: |
-          az aks update -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g ${{ secrets.AZURE_RG }} --attach-acr "demoperformancecontainerregistry2"
+          # Get ACR credentials
+          dockerServer=demoperformancecontainerregistry2.azurecr.io
+          dockerUsername=$(az acr credential show --name demoperformancecontainerregistry2 --query username | tr -d '"')
+          dockerPassword=$(az acr credential show --name demoperformancecontainerregistry2 --query passwords[0].value | tr -d '"')
+          dockerEmail=docker@localhost
+
           az aks get-credentials -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g  ${{ secrets.AZURE_RG }}
+
+          # Setup Secret for registry credentials
+          kubectl create secret docker-registry regcred \
+              --docker-server=$dockerServer \
+              --docker-username=$dockerUsername \
+              --docker-password=$dockerPassword \
+              --docker-email=$dockerEmail
+
+#          az aks update -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g ${{ secrets.AZURE_RG }} --attach-acr "demoperformancecontainerregistry2"
           kubectl apply -f deploy.yml
           kubectl get pods
 
