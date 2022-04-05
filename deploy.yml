@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: DemoPerformance
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: DemoPerformance
+  template:
+    metadata:
+      labels:
+        app: DemoPerformance
+    spec:
+      containers:
+      - name: DemoPerformance
+        image: demoperformancecontainerregistry2.azurecr.io/demoperformanceapp
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
