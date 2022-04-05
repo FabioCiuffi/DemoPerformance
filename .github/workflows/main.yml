@@ -67,9 +67,10 @@ jobs:
       # Build and push image 
       - name: 'Build and push image'
         run: |
-          az acr login --name toLower(${{ env.ContainerRegistryName }})
-          docker build src/helloworld-service/HelloWorld.API/ -t toLower(${{ env.ContainerRegistryName }}).azurecr.io/demoperformanceapp:${{ github.sha }}
-          docker push toLower(${{ env.ContainerRegistryName }}).azurecr.io/demoperformanceapp:${{ github.sha }}
+          ContainerRegistryNameLower=toLower(${{ env.ContainerRegistryName }})
+          az acr login --name $ContainerRegistryNameLower
+          docker build src/helloworld-service/HelloWorld.API/ -t $ContainerRegistryNameLower.azurecr.io/demoperformanceapp:${{ github.sha }}
+          docker push $ContainerRegistryNameLower.azurecr.io/demoperformanceapp:${{ github.sha }}
 
       # - name: 'Deploy to Azure Container Instances'
       #   uses: 'azure/aci-deploy@v1'
