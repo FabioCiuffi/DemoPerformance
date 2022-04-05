@@ -3,12 +3,12 @@ name: CI
 # This is a basic workflow to help you get started with Actions
 # Global Variables
 env:
-  AZUREAPPLICATIONINSIGHTSNAME:   "DemoPerformanceApplicationInsights2"
-  CONTAINERREGISTRYNAME:          "DemoPerformanceContainerRegistry2"
-  CONTAINERREGISTRYNAMELOWER:     "demoperformancecontainerregistry2"
-  KUBERNETESSERVICENAME:          "DemoPerformanceKubernetesService2"
-  AZURELOGANALYTICSWORKSPACENAME: "DemoPerformanceLogAnalyticsWorkspace2"
-  AZURELOADTESTINGNAME:           "DemoPerformanceAzureLoadTesting2"
+  AZUREAPPLICATIONINSIGHTSNAME:   "DemoApplicationInsights2"
+  CONTAINERREGISTRYNAME:          "DemoContainerRegistry2"
+  CONTAINERREGISTRYNAMELOWER:     "democontainerregistry2"
+  KUBERNETESSERVICENAME:          "DemoKubernetesService2"
+  AZURELOGANALYTICSWORKSPACENAME: "DemoLogAnalyticsWorkspace2"
+  AZURELOADTESTINGNAME:           "DemoAzureLoadTesting2"
 
 # Controls when the workflow will run
 on:
@@ -68,18 +68,6 @@ jobs:
           az acr login --name "${{ env.CONTAINERREGISTRYNAMELOWER }}"
           docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:${{ github.sha }}
           docker push ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:${{ github.sha }}
-
-      # - name: 'Deploy to Azure Container Instances'
-      #   uses: 'azure/aci-deploy@v1'
-      #   with:
-      #     resource-group: ${{ secrets.AZURE_RG }}
-      #     dns-name-label: ${{ secrets.AZURE_RG }}${{ github.run_number }}
-      #     image: toLower(${{ env.CONTAINERREGISTRYNAME }}).azurecr.io/demoperformanceapp:${{ github.sha }}
-      #     registry-login-server: toLower(${{ env.CONTAINERREGISTRYNAME }}).azurecr.io
-      #     registry-username: DemoPerformanceContainerRegistry2
-      #     registry-password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
-      #     name: DemoPerformanceApp
-      #     location: 'westeurope'
 
       # Deploy Bicep file Kubernetes service
       - name: Deploy Bicep file Kubernetes service
