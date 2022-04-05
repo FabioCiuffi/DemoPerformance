@@ -64,22 +64,21 @@ jobs:
           template: ./Bicep/ACR/main.bicep
           parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
           failOnStdErr: false
-      - run: |
-          az acr credential show -n "demoperformancecontainerregistry2" --query "demoperformancecontainerregistry2"
-          az acr credential show -n "demoperformancecontainerregistry2" --query passwords[0].value
-          az acr credential show -n "demoperformancecontainerregistry2" --query passwords[1].value
-
-      # # Build and push image 
-      # - name: 'Build and push image'
-      #   uses: azure/docker-login@v1
-      #   with:
-      #     login-server: demoperformancecontainerregistry2.azurecr.io
-      #     username: DemoPerformanceContainerRegistry2
-      #     password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
       # - run: |
-      #     az acr login --name "demoperformancecontainerregistry2"
-      #     docker build src/helloworld-service/HelloWorld.API/ -t demoperformancecontainerregistry2.azurecr.io/demoperformanceapp:${{ github.sha }}
-      #     docker push demoperformancecontainerregistry2.azurecr.io/demoperformanceapp:${{ github.sha }}
+      #     az acr credential show -n "demoperformancecontainerregistry2" --query passwords[0].value
+      #     az acr credential show -n "demoperformancecontainerregistry2" --query passwords[1].value
+
+      # Build and push image 
+      - name: 'Build and push image'
+      #  uses: azure/docker-login@v1
+        # with:
+        #   login-server: demoperformancecontainerregistry2.azurecr.io
+        #   username: DemoPerformanceContainerRegistry2
+        #   password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
+        run: |
+          az acr login --name "demoperformancecontainerregistry2"
+          docker build src/helloworld-service/HelloWorld.API/ -t demoperformancecontainerregistry2.azurecr.io/demoperformanceapp:${{ github.sha }}
+          docker push demoperformancecontainerregistry2.azurecr.io/demoperformanceapp:${{ github.sha }}
 
       # - name: 'Deploy to Azure Container Instances'
       #   uses: 'azure/aci-deploy@v1'
