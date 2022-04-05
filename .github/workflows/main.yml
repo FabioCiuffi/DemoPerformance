@@ -8,6 +8,7 @@ env:
   APPSUFFIX: "2"
   AzureApplicationInsightsName: "DemoPerformanceApplicationInsights2"
   ContainerRegistryName:        "DemoPerformanceContainerRegistry2"
+  ContainerRegistryNameLower:   "demoperformancecontainerregistry2"
   KubernetesServiceName:        "DemoPerformanceAKSCluster2"
   AzureLogAnalyticsName:        "DemoPerformanceLogAnalyticsWorkspace2"
   AzureLoadTestingName:         "DemoPerformanceAzureLoadTestingName2"
@@ -67,10 +68,9 @@ jobs:
       # Build and push image 
       - name: 'Build and push image'
         run: |
-          ContainerRegistryNameLower=toLower(${{ env.ContainerRegistryName }})
-          az acr login --name $ContainerRegistryNameLower
-          docker build src/helloworld-service/HelloWorld.API/ -t $ContainerRegistryNameLower.azurecr.io/demoperformanceapp:${{ github.sha }}
-          docker push $ContainerRegistryNameLower.azurecr.io/demoperformanceapp:${{ github.sha }}
+          az acr login --name "${{ env.ContainerRegistryNameLower }}"
+          docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.ContainerRegistryNameLower }}.azurecr.io/demoperformanceapp:${{ github.sha }}
+          docker push ${{ env.ContainerRegistryNameLower }}.azurecr.io/demoperformanceapp:${{ github.sha }}
 
       # - name: 'Deploy to Azure Container Instances'
       #   uses: 'azure/aci-deploy@v1'
@@ -98,9 +98,9 @@ jobs:
       - name: Deploy Container registry image to Kubernetes service
         run: |
           # Get ACR credentials
-          dockerServer=toLower(${{ env.ContainerRegistryName }}).azurecr.io
-          dockerUsername=$(az acr credential show --name toLower(${{ env.ContainerRegistryName }}) --query username | tr -d '"')
-          dockerPassword=$(az acr credential show --name toLower(${{ env.ContainerRegistryName }}) --query passwords[0].value | tr -d '"')
+          dockerServer=${{ env.ContainerRegistryNameLower }}.azurecr.io
+          dockerUsername=$(az acr credential show --name ${{ env.ContainerRegistryNameLower }} --query username | tr -d '"')
+          dockerPassword=$(az acr credential show --name ${{ env.ContainerRegistryNameLower }} --query passwords[0].value | tr -d '"')
           dockerEmail=docker@localhost
 
           az aks get-credentials -n "${{ env.KubernetesServiceName }}" -g  ${{ secrets.AZURE_RG }}
@@ -112,7 +112,7 @@ jobs:
               --docker-password=$dockerPassword \
               --docker-email=$dockerEmail
           
-          # az aks update -n "${{ env.KubernetesServiceName }}" -g ${{ secrets.AZURE_RG }} --attach-acr "toLower(${{ env.ContainerRegistryName }})"
+          # az aks update -n "${{ env.KubernetesServiceName }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.ContainerRegistryNameLower }}"
           
           kubectl apply -f deploy.yml
           kubectl get pods
