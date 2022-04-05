@@ -6,6 +6,7 @@ env:
   AZUREAPPLICATIONINSIGHTSNAME:   "ContosoApplicationInsights2"
   CONTAINERREGISTRYNAME:          "ContosoContainerRegistry2"
   CONTAINERREGISTRYNAMELOWER:     "contosocontainerregistry2"
+  REPOSITORYNAME:                 "contosoapp"
   KUBERNETESSERVICENAME:          "ContosoKubernetesService2"
   AZURELOGANALYTICSWORKSPACENAME: "ContosoLogAnalyticsWorkspace2"
   AZURELOADTESTINGNAME:           "ContosoAzureLoadTesting2"
@@ -66,8 +67,8 @@ jobs:
       - name: 'Build and push image'
         run: |
           az acr login --name "${{ env.CONTAINERREGISTRYNAMELOWER }}"
-          docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:v1
-          docker push ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:v1
+          docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
+          docker push ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
 
       # Deploy Bicep file Kubernetes service
       - name: Deploy Bicep file Kubernetes service
@@ -91,11 +92,11 @@ jobs:
           az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g  ${{ secrets.AZURE_RG }}
 
           # Setup Secret for registry credentials
-          kubectl create secret docker-registry regcred \
-              --docker-server=$dockerServer \
-              --docker-username=$dockerUsername \
-              --docker-password=$dockerPassword \
-              --docker-email=$dockerEmail
+          #kubectl create secret docker-registry regcred \
+          #    --docker-server=$dockerServer \
+          #    --docker-username=$dockerUsername \
+          #    --docker-password=$dockerPassword \
+          #    --docker-email=$dockerEmail
           
           # az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.CONTAINERREGISTRYNAMELOWER }}"
           
