@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demoperformance
+  name: contoso
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: demoperformance
+      app: contoso
   template:
     metadata:
       labels:
-        app: demoperformance
+        app: contoso
     spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - name: demoperformance
-        image: demoperformancecontainerregistry2.azurecr.io/demoperformanceapp
+      - name: contoso
+        image: contosocontainerregistry2.azurecr.io/contosoapp:v1
         ports:
         - containerPort: 80
         resources:
@@ -30,15 +30,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: demoperformanceapp
+  name: contosoapp
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"  
   labels:
-    run: demoperformanceapp
+    run: contosoapp
 spec:
   type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
   selector:
-    app: demoperformance
+    app: contoso

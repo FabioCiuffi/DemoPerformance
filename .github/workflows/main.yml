@@ -3,12 +3,12 @@ name: CI
 # This is a basic workflow to help you get started with Actions
 # Global Variables
 env:
-  AZUREAPPLICATIONINSIGHTSNAME:   "DemoApplicationInsights2"
-  CONTAINERREGISTRYNAME:          "DemoContainerRegistry2"
-  CONTAINERREGISTRYNAMELOWER:     "democontainerregistry2"
-  KUBERNETESSERVICENAME:          "DemoKubernetesService2"
-  AZURELOGANALYTICSWORKSPACENAME: "DemoLogAnalyticsWorkspace2"
-  AZURELOADTESTINGNAME:           "DemoAzureLoadTesting2"
+  AZUREAPPLICATIONINSIGHTSNAME:   "ContosoApplicationInsights2"
+  CONTAINERREGISTRYNAME:          "ContosoContainerRegistry2"
+  CONTAINERREGISTRYNAMELOWER:     "contosocontainerregistry2"
+  KUBERNETESSERVICENAME:          "ContosoKubernetesService2"
+  AZURELOGANALYTICSWORKSPACENAME: "ContosoLogAnalyticsWorkspace2"
+  AZURELOADTESTINGNAME:           "ContosoAzureLoadTesting2"
 
 # Controls when the workflow will run
 on:
@@ -66,8 +66,8 @@ jobs:
       - name: 'Build and push image'
         run: |
           az acr login --name "${{ env.CONTAINERREGISTRYNAMELOWER }}"
-          docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:${{ github.sha }}
-          docker push ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:${{ github.sha }}
+          docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:v1
+          docker push ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/demoperformanceapp:v1
 
       # Deploy Bicep file Kubernetes service
       - name: Deploy Bicep file Kubernetes service
