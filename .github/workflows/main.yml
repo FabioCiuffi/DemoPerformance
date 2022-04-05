@@ -52,7 +52,6 @@ jobs:
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/AAI/main.bicep
           parameters: name="${{ env.AzureApplicationInsightsName }}" location="westeurope"
-          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ApplicationInsights${{ env.APPSUFFIX }}" location="westeurope"
           failOnStdErr: false
 
       # Deploy Bicep file Container registry
@@ -63,13 +62,12 @@ jobs:
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ACR/main.bicep
           parameters: name="${{ env.ContainerRegistryName }}"
-          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
           failOnStdErr: false
 
       # Build and push image 
       - name: 'Build and push image'
         run: |
-          az acr login --name "toLower(${{ env.ContainerRegistryName }})"
+          az acr login --name toLower(${{ env.ContainerRegistryName }})
           docker build src/helloworld-service/HelloWorld.API/ -t toLower(${{ env.ContainerRegistryName }}).azurecr.io/demoperformanceapp:${{ github.sha }}
           docker push toLower(${{ env.ContainerRegistryName }}).azurecr.io/demoperformanceapp:${{ github.sha }}
 
@@ -93,7 +91,6 @@ jobs:
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/AKS/main.bicep
           parameters: name="${{ env.KubernetesServiceName }}"
-          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}"
           failOnStdErr: false
 
       # Deploy Container registry image to Kubernetes services
@@ -105,7 +102,7 @@ jobs:
           dockerPassword=$(az acr credential show --name toLower(${{ env.ContainerRegistryName }}) --query passwords[0].value | tr -d '"')
           dockerEmail=docker@localhost
 
-          az aks get-credentials -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g  ${{ secrets.AZURE_RG }}
+          az aks get-credentials -n "${{ env.KubernetesServiceName }}" -g  ${{ secrets.AZURE_RG }}
 
           # Setup Secret for registry credentials
           kubectl create secret docker-registry regcred \
@@ -114,7 +111,7 @@ jobs:
               --docker-password=$dockerPassword \
               --docker-email=$dockerEmail
           
-          # az aks update -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g ${{ secrets.AZURE_RG }} --attach-acr "toLower(${{ env.ContainerRegistryName }})"
+          # az aks update -n "${{ env.KubernetesServiceName }}" -g ${{ secrets.AZURE_RG }} --attach-acr "toLower(${{ env.ContainerRegistryName }})"
           
           kubectl apply -f deploy.yml
           kubectl get pods
