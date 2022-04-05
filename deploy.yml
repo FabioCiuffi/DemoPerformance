@@ -31,9 +31,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: demoperformanceapp
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"  
   labels:
     run: demoperformanceapp
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP

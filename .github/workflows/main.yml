@@ -6,9 +6,11 @@ env:
   APPPREFIX: ""
   APPNAME: "DemoPerformance"
   APPSUFFIX: "2"
-  #AzureApplicationInsightsName: "${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
-  #ContainerRegistryName: "${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
-  #ContainerRegistryName: "${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
+  AzureApplicationInsightsName: "DemoPerformanceApplicationInsights2"
+  ContainerRegistryName:        "DemoPerformanceContainerRegistry2"
+  KubernetesServiceName:        "DemoPerformanceAKSCluster2"
+  AzureLogAnalyticsName:        "DemoPerformanceLogAnalyticsWorkspace2"
+  AzureLoadTestingName:         "DemoPerformanceAzureLoadTestingName2"
 
 # Controls when the workflow will run
 on:
@@ -31,11 +33,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    
-      # - name: Set env object varibles names
-      #   run: echo ::set-env ContainerRegistryName="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
-      # - name: ContainerRegistryName value
-      #   run: echo $ContainerRegistryName
 
       # Checkout code
       - name: Checkout code
@@ -47,15 +44,16 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # # Deploy Bicep file Azure Application Insights 
-      # - name: Deploy Bicep file Azure Application Insights 
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/AAI/main.bicep
-      #     parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ApplicationInsights${{ env.APPSUFFIX }}" location="westeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Application Insights 
+      - name: Deploy Bicep file Azure Application Insights 
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/AAI/main.bicep
+          parameters: name="${{ env.AzureApplicationInsightsName }}" location="westeurope"
+          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ApplicationInsights${{ env.APPSUFFIX }}" location="westeurope"
+          failOnStdErr: false
 
       # Deploy Bicep file Container registry
       - name: Deploy Bicep file Container registry
@@ -64,31 +62,24 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/ACR/main.bicep
-          parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
+          parameters: name="${{ env.ContainerRegistryName }}"
+          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}ContainerRegistry${{ env.APPSUFFIX }}"
           failOnStdErr: false
-      # - run: |
-      #     az acr credential show -n "demoperformancecontainerregistry2" --query passwords[0].value
-      #     az acr credential show -n "demoperformancecontainerregistry2" --query passwords[1].value
 
       # Build and push image 
       - name: 'Build and push image'
-      #  uses: azure/docker-login@v1
-        # with:
-        #   login-server: demoperformancecontainerregistry2.azurecr.io
-        #   username: DemoPerformanceContainerRegistry2
-        #   password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
         run: |
-          az acr login --name "demoperformancecontainerregistry2"
-          docker build src/helloworld-service/HelloWorld.API/ -t demoperformancecontainerregistry2.azurecr.io/demoperformanceapp:${{ github.sha }}
-          docker push demoperformancecontainerregistry2.azurecr.io/demoperformanceapp:${{ github.sha }}
+          az acr login --name "${{ toLower(env.ContainerRegistryName) }}"
+          docker build src/helloworld-service/HelloWorld.API/ -t ${{ toLower(env.ContainerRegistryName) }}.azurecr.io/demoperformanceapp:${{ github.sha }}
+          docker push ${{ toLower(env.ContainerRegistryName) }}.azurecr.io/demoperformanceapp:${{ github.sha }}
 
       # - name: 'Deploy to Azure Container Instances'
       #   uses: 'azure/aci-deploy@v1'
       #   with:
       #     resource-group: ${{ secrets.AZURE_RG }}
       #     dns-name-label: ${{ secrets.AZURE_RG }}${{ github.run_number }}
-      #     image: demoperformancecontainerregistry2.azurecr.io/demoperformanceapp:${{ github.sha }}
-      #     registry-login-server: demoperformancecontainerregistry2.azurecr.io
+      #     image: ${{ toLower(env.ContainerRegistryName) }}.azurecr.io/demoperformanceapp:${{ github.sha }}
+      #     registry-login-server: ${{ toLower(env.ContainerRegistryName) }}.azurecr.io
       #     registry-username: DemoPerformanceContainerRegistry2
       #     registry-password: ZGquDPNmz64TtcsEyiLqz/mfKlfjgENI
       #     name: DemoPerformanceApp
@@ -101,16 +92,17 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./Bicep/AKS/main.bicep
-          parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}"
+          parameters: name="${{ env.KubernetesServiceName }}"
+          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}"
           failOnStdErr: false
 
       # Deploy Container registry image to Kubernetes services
       - name: Deploy Container registry image to Kubernetes service
         run: |
           # Get ACR credentials
-          dockerServer=demoperformancecontainerregistry2.azurecr.io
-          dockerUsername=$(az acr credential show --name demoperformancecontainerregistry2 --query username | tr -d '"')
-          dockerPassword=$(az acr credential show --name demoperformancecontainerregistry2 --query passwords[0].value | tr -d '"')
+          dockerServer=${{ toLower(env.ContainerRegistryName) }}.azurecr.io
+          dockerUsername=$(az acr credential show --name ${{ toLower(env.ContainerRegistryName) }} --query username | tr -d '"')
+          dockerPassword=$(az acr credential show --name ${{ toLower(env.ContainerRegistryName) }} --query passwords[0].value | tr -d '"')
           dockerEmail=docker@localhost
 
           az aks get-credentials -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g  ${{ secrets.AZURE_RG }}
@@ -122,37 +114,39 @@ jobs:
               --docker-password=$dockerPassword \
               --docker-email=$dockerEmail
           
-          # az aks update -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g ${{ secrets.AZURE_RG }} --attach-acr "demoperformancecontainerregistry2"
+          # az aks update -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ toLower(env.ContainerRegistryName) }}"
           
           kubectl apply -f deploy.yml
           kubectl get pods
 
-      # # Deploy Bicep file Azure Log Analytics
-      # - name: Deploy Bicep file Azure Log Analytics
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALA/main.bicep
-      #     parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LogAnalyticsWorkspace${{ env.APPSUFFIX }}" location="westeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Log Analytics
+      - name: Deploy Bicep file Azure Log Analytics
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALA/main.bicep
+          parameters: name="${{ env.AzureLogAnalyticsName }}"  location="westeurope"
+          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LogAnalyticsWorkspace${{ env.APPSUFFIX }}" location="westeurope"
+          failOnStdErr: false
 
-      # # Deploy Bicep file Azure Load Testing
-      # - name: Deploy Bicep file Azure Load Testing
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALT/main.bicep
-      #     parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LoadTesting${{ env.APPSUFFIX }}" location="northeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Azure Load Testing
+      - name: Deploy Bicep file Azure Load Testing
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALT/main.bicep
+          parameters: name="${{ env.AzureLoadTestingName }}" location="northeurope"
+          #parameters: name="${{ env.APPPREFIX }}${{ env.APPNAME }}LoadTesting${{ env.APPSUFFIX }}" location="northeurope"
+          failOnStdErr: false
 
-      # # Runs a single command using the runners shell
-      # - name: Run a one-line script
-      #   run: az version
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: az version
 
-      # # Runs a set of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
