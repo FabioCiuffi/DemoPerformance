@@ -121,7 +121,9 @@ jobs:
               --docker-username=$dockerUsername \
               --docker-password=$dockerPassword \
               --docker-email=$dockerEmail
+          
           # az aks update -n "${{ env.APPPREFIX }}${{ env.APPNAME }}AKSCluster${{ env.APPSUFFIX }}" -g ${{ secrets.AZURE_RG }} --attach-acr "demoperformancecontainerregistry2"
+          
           kubectl apply -f deploy.yml
           kubectl get pods
 

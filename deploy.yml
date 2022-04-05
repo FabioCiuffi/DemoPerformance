@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: DemoPerformance
+  name: demoperformance
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: DemoPerformance
+      app: demoperformance
   template:
     metadata:
       labels:
-        app: DemoPerformance
+        app: demoperformance
     spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - name: DemoPerformance
+      - name: demoperformance
         image: demoperformancecontainerregistry2.azurecr.io/demoperformanceapp
         ports:
         - containerPort: 80
@@ -38,4 +38,4 @@ spec:
   - port: 80
     protocol: TCP
   selector:
-    app: DemoPerformance
+    app: demoperformance
