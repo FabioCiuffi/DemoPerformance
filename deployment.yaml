@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: contoso
+  name: [APPNAME]
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: contoso
+      app: [APPNAME]
   template:
     metadata:
       labels:
-        app: contoso
+        app: [APPNAME]
     spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - name: contoso
-        image: IMAGENAME #contosocontainerregistry2.azurecr.io/contosoapp:v1
+      - name: [APPNAME]
+        image: [IMAGENAME]
         ports:
         - containerPort: 80
         resources:
@@ -30,15 +30,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: contosoapp
+  name: app
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"  
   labels:
-    run: contosoapp
+    run: app
 spec:
   type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
   selector:
-    app: contoso
+    app: [APPNAME]
