@@ -6,7 +6,7 @@ env:
   AZUREAPPLICATIONINSIGHTSNAME:   "ContosoApplicationInsights2"
   CONTAINERREGISTRYNAME:          "ContosoContainerRegistry2"
   CONTAINERREGISTRYNAMELOWER:     "contosocontainerregistry2"
-  REPOSITORYNAME:                 "contosoapp"
+  REPOSITORYNAME:                 "contosorepository"
   KUBERNETESSERVICENAME:          "ContosoKubernetesService2"
   AZURELOGANALYTICSWORKSPACENAME: "ContosoLogAnalyticsWorkspace2"
   AZURELOADTESTINGNAME:           "ContosoAzureLoadTesting2"
@@ -100,7 +100,7 @@ jobs:
           
           # az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.CONTAINERREGISTRYNAMELOWER }}"
           
-          kubectl apply -f deploy.yml
+          kubectl apply -f deployment.yaml --from-literal=IMAGENAME=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
           kubectl get pods
 
       # Deploy Bicep file Azure Log Analytics
