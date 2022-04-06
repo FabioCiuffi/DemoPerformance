@@ -16,7 +16,7 @@ spec:
       - name: regcred
       containers:
       - name: contoso
-        image: ["$(IMAGENAME)"] #contosocontainerregistry2.azurecr.io/contosoapp:v1
+        image: IMAGENAME #contosocontainerregistry2.azurecr.io/contosoapp:v1
         ports:
         - containerPort: 80
         resources:

@@ -33,8 +33,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-      # Checkout code
-      - name: Checkout code
+      # Checkout last version code from Main branch
+      - name: Checkout last version code from Main branch
         uses: actions/checkout@main
 
       # Log into Azure
@@ -43,8 +43,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy Bicep file Azure Application Insights 
-      - name: Deploy Bicep file Azure Application Insights 
+      # Deploy Bicep file Application Insights 
+      - name: Deploy Bicep file Application Insights 
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
@@ -63,8 +63,8 @@ jobs:
           parameters: name="${{ env.CONTAINERREGISTRYNAME }}"
           failOnStdErr: false
 
-      # Build and push image 
-      - name: 'Build and push image'
+      # 'Build and push image to Azure Container Registry' 
+      - name: 'Build and push image to Azure Container Registry'
         run: |
           az acr login --name "${{ env.CONTAINERREGISTRYNAMELOWER }}"
           docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
@@ -80,7 +80,7 @@ jobs:
           parameters: name="${{ env.KUBERNETESSERVICENAME }}"
           failOnStdErr: false
 
-      # Deploy Container registry image to Kubernetes services
+      # Deploy Container registry image to Kubernetes service
       - name: Deploy Container registry image to Kubernetes service
         run: |
           # Get ACR credentials
@@ -89,7 +89,7 @@ jobs:
           dockerPassword=$(az acr credential show --name ${{ env.CONTAINERREGISTRYNAMELOWER }} --query passwords[0].value | tr -d '"')
           dockerEmail=docker@localhost
 
-          az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g  ${{ secrets.AZURE_RG }}
+          az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g  "${{ secrets.AZURE_RG }}"
 
           # Setup Secret for registry credentials
           #kubectl create secret docker-registry regcred \
@@ -100,11 +100,12 @@ jobs:
           
           # az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.CONTAINERREGISTRYNAMELOWER }}"
           
-          kubectl apply -f deployment.yaml --from-literal=IMAGENAME=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
+          sed -e 's|IMAGENAME|${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1|g' deployment.yaml
+          kubectl apply -f deployment.yaml
           kubectl get pods
 
-      # Deploy Bicep file Azure Log Analytics
-      - name: Deploy Bicep file Azure Log Analytics
+      # Deploy Bicep file Log Analytics workspace
+      - name: Deploy Bicep file Log Analytics workspace
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
