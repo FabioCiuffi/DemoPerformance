@@ -88,8 +88,9 @@ jobs:
           helm repo add nginx-stable https://helm.nginx.com/stable
           helm repo update
           helm upgrade nginx nginx-stable/nginx-ingress
-          cd src/helloworld-service/helloworld-chart
-          helm upgrade --install --force helloworld .
+          # cd src/helloworld-service/helloworld-chart
+          # helm upgrade helloworld .
+          helm install --name hello-world src/helloworld-service/helloworld-chart
 
       # # Deploy Container registry image to Kubernetes service
       # - name: Deploy Container registry image to Kubernetes service
