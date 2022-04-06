@@ -101,7 +101,7 @@ jobs:
           
           # az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.CONTAINERREGISTRYNAMELOWER }}"
 
-          sed -i "s|APPNAME|${{ env.APPNAME }}|g;s|IMAGENAME|${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io|${{ env.REPOSITORYNAME }}:v1|g" deployment.yaml
+          sed -i 's|APPNAME|${{ env.APPNAME }}|g;s|IMAGENAME|${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io|${{ env.REPOSITORYNAME }}:v1|g' deployment.yaml
           kubectl apply -f deployment.yaml
           kubectl get pods
 
