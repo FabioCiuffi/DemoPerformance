@@ -83,13 +83,13 @@ jobs:
 
       # Deploy Container registry image to Kubernetes service
       - name: Deploy Container registry image to Kubernetes service
-          run: |
-            az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}"
-            helm repo add nginx-stable https://helm.nginx.com/stable
-            helm repo update
-            helm upgrade nginx nginx-stable/nginx-ingress
-            cd src/helloworld-service/helloworld-chart
-            helm upgrade helloworld .
+        run: |
+          az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}"
+          helm repo add nginx-stable https://helm.nginx.com/stable
+          helm repo update
+          helm upgrade nginx nginx-stable/nginx-ingress
+          cd src/helloworld-service/helloworld-chart
+          helm upgrade helloworld .
 
 
       # # Deploy Container registry image to Kubernetes service
