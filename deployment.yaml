@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: [APPNAME]
+  name: APPNAME
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: [APPNAME]
+      app: APPNAME
   template:
     metadata:
       labels:
-        app: [APPNAME]
+        app: APPNAME
     spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - name: [APPNAME]
-        image: [IMAGENAME]
+      - name: APPNAME
+        image: IMAGENAME
         ports:
         - containerPort: 80
         resources:
@@ -41,4 +41,4 @@ spec:
   - port: 80
     protocol: TCP
   selector:
-    app: [APPNAME]
+    app: APPNAME
