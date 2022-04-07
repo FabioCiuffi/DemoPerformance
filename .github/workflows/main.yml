@@ -82,6 +82,7 @@ jobs:
           failOnStdErr: false
 
       # Assign role to Kubernetes service user to access Container Registry image
+      # https://docs.microsoft.com/it-it/azure/aks/cluster-container-registry-integration?tabs=azure-cli
       - name: Assign role to Kubernetes service user to access Container Registry image 
         run: |
           sleep 10
