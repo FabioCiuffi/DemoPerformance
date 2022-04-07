@@ -3,14 +3,14 @@ name: CI
 # This is a basic workflow to help you get started with Actions
 # Global Variables
 env:
-  AZUREAPPLICATIONINSIGHTSNAME:   "ContosoApplicationInsights2"
-  CONTAINERREGISTRYNAME:          "ContosoContainerRegistry2"
-  CONTAINERREGISTRYNAMELOWER:     "contosocontainerregistry2"
-  REPOSITORYNAME:                 "contosorepository"
-  APPNAME:                        "contoso"
-  KUBERNETESSERVICENAME:          "ContosoKubernetesService2"
-  AZURELOGANALYTICSWORKSPACENAME: "ContosoLogAnalyticsWorkspace2"
-  AZURELOADTESTINGNAME:           "ContosoAzureLoadTesting2"
+  AZUREAPPLICATIONINSIGHTSNAME:   "StocchiApplicationInsights2"
+  CONTAINERREGISTRYNAME:          "StocchiContainerRegistry2"
+  CONTAINERREGISTRYNAMELOWER:     "stocchicontainerregistry2"
+  REPOSITORYNAME:                 "stocchirepository"
+  APPNAME:                        "stocchi"
+  KUBERNETESSERVICENAME:          "StocchiKubernetesService2"
+  AZURELOGANALYTICSWORKSPACENAME: "StocchiLogAnalyticsWorkspace2"
+  AZURELOADTESTINGNAME:           "StocchiAzureLoadTesting2"
 
 # Controls when the workflow will run
 on:
