@@ -85,35 +85,36 @@ jobs:
       - name: Deploy Container registry image to Kubernetes service
         run: |
           az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}"
-          helm repo add nginx-stable https://helm.nginx.com/stable
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           helm repo update
-          helm upgrade nginx nginx-stable/nginx-ingress --install
+          helm upgrade nginx ingress-nginx/ingress-nginx --install
           cd src/helloworld-service/helloworld-chart
-          helm upgrade helloworld . --install
+          helm upgrade helloworld . --install --set image.repository=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }} --set image.tag=v1 --set app.name=${{ env.APPNAME }}
+
 
       # Deploy Container registry image to Kubernetes service
-      - name: Deploy Container registry image to Kubernetes service
-        run: |
-          # Get ACR credentials
-          dockerServer=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io
-          dockerUsername=$(az acr credential show --name ${{ env.CONTAINERREGISTRYNAMELOWER }} --query username | tr -d '"')
-          dockerPassword=$(az acr credential show --name ${{ env.CONTAINERREGISTRYNAMELOWER }} --query passwords[0].value | tr -d '"')
-          dockerEmail=docker@localhost
+      # - name: Deploy Container registry image to Kubernetes service
+      #   run: |
+      #     # Get ACR credentials
+      #     dockerServer=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io
+      #     dockerUsername=$(az acr credential show --name ${{ env.CONTAINERREGISTRYNAMELOWER }} --query username | tr -d '"')
+      #     dockerPassword=$(az acr credential show --name ${{ env.CONTAINERREGISTRYNAMELOWER }} --query passwords[0].value | tr -d '"')
+      #     dockerEmail=docker@localhost
 
-          az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g  "${{ secrets.AZURE_RG }}"
+      #     az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g  "${{ secrets.AZURE_RG }}"
 
-          # Setup Secret for registry credentials
-          #kubectl create secret docker-registry regcred \
-          #    --docker-server=$dockerServer \
-          #    --docker-username=$dockerUsername \
-          #    --docker-password=$dockerPassword \
-          #    --docker-email=$dockerEmail
+      #     # Setup Secret for registry credentials
+      #     #kubectl create secret docker-registry regcred \
+      #     #    --docker-server=$dockerServer \
+      #     #    --docker-username=$dockerUsername \
+      #     #    --docker-password=$dockerPassword \
+      #     #    --docker-email=$dockerEmail
           
-          # az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.CONTAINERREGISTRYNAMELOWER }}"
+      #     # az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.CONTAINERREGISTRYNAMELOWER }}"
 
-          sed --in-place -e 's|APPNAME|${{ env.APPNAME }}|g' -e 's|IMAGENAME|${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1|g' deployment.yaml
-          kubectl apply -f deployment.yaml
-          kubectl get pods
+      #     sed --in-place -e 's|APPNAME|${{ env.APPNAME }}|g' -e 's|IMAGENAME|${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1|g' deployment.yaml
+      #     kubectl apply -f deployment.yaml
+      #     kubectl get pods
 
       # Deploy Bicep file Log Analytics workspace
       - name: Deploy Bicep file Log Analytics workspace

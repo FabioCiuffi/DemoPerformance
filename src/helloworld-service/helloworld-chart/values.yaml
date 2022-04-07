@@ -4,8 +4,11 @@
 
 replicaCount: 1
 
+app:
+  name: helloworld
+
 image:
-  repository: demoperformancecontainerregistry.azurecr.io/demoperformance
+  repository: contosocontainerregistry2.azurecr.io/contosorepository
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
