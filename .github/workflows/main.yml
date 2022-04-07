@@ -81,7 +81,7 @@ jobs:
       #     parameters: name="${{ env.KUBERNETESSERVICENAME }}"
       #     failOnStdErr: false
 
-      # Deploy Container registry image to Kubernetes service
+      # Deploy Container registry image to Kubernetes service 
       - name: Deploy Container registry image to Kubernetes service
         run: |
           az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}"
