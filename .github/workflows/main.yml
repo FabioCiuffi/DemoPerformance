@@ -90,7 +90,7 @@ jobs:
       # Deploy Container registry image to Kubernetes service 
       - name: Deploy Container registry image to Kubernetes service
         run: |
-          az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}"
+          az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" 
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           helm repo update
           helm upgrade nginx ingress-nginx/ingress-nginx --install
