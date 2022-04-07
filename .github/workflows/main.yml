@@ -81,8 +81,8 @@ jobs:
           parameters: name="${{ env.KUBERNETESSERVICENAME }}"
           failOnStdErr: false
 
-      # Set Kubernetes service to access 
-     - name: Set Kubernetes service to access 
+      # Assign role to Kubernetes service user to access Container Registry image
+      - name: Assign role to Kubernetes service user to access Container Registry image 
         run: az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" --attach-acr "${{ env.KUBERNETESSERVICENAME }}"
 
       # Deploy Container registry image to Kubernetes service 
