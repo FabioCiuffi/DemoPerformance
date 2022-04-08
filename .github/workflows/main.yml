@@ -83,9 +83,12 @@ jobs:
 
       # Assign role to Kubernetes service user to access Container Registry image
       # https://docs.microsoft.com/it-it/azure/aks/cluster-container-registry-integration?tabs=azure-cli
+      # https://docs.microsoft.com/en-us/answers/questions/536758/how-to-allow-aks-cluster-access-to-azure-container.html
       - name: Assign role to Kubernetes service user to access Container Registry image 
         run: |
           sleep 5
+          #az aks update -n "STUKubernetesService" -g "STU" --attach-acr "STUContainerRegistry"
+
           az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" --attach-acr "${{ env.CONTAINERREGISTRYNAME }}"
 
       # Deploy Container registry image to Kubernetes service 
