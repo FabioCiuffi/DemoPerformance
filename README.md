@@ -11,7 +11,7 @@ az group create -l "switzerlandnorth" -n "STU"
 Create a manage identiti and assign contributor role to group
 https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
 
-az ad sp create-for-rbac --name "STU" --role contributor --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/Sample --sdk-auth
+az ad sp create-for-rbac --name "STU" --role contributor --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
 
 3)
 Save output into notepad to set GitHub secret key AZURE_CREDENTIALS: 
@@ -20,12 +20,6 @@ Save output into notepad to set GitHub secret key AZURE_CREDENTIALS:
   "clientSecret": "9F._I904ZJo9UZBmEAeb9_FgFENTrdfilp",
   "subscriptionId": "744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e",
   "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
-  "resourceManagerEndpointUrl": "https://management.azure.com/",
-  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
-  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-  "galleryEndpointUrl": "https://gallery.azure.com/",
-  "managementEndpointUrl": "https://management.core.windows.net/"
 }
 
 4)
