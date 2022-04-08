@@ -1,17 +1,20 @@
 # DemoPerformance
-# Follow instruction for preparare environment
+Follow the instructions to prepare the environment to run the resource creation pipeline
+Access your azure subscription with administrative credentials
 
-1) Create a resource group under subscription 
+1) Create a resource group that will contain the resources that will be generated
 https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest
 
+Sample: 
 az group create -l "switzerlandnorth" -n "STU"
 
-2) Create a manage identiti and assign contributor role to group
+2) Create a management identity and assign the collaborator role to the group created in the previous step. Save the statement output in Notepad for use in the next step
 https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
 
+Sample
 az ad sp create-for-rbac --name "STU" --role contributor --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
 
-3) Save output into notepad to set GitHub secret key AZURE_CREDENTIALS: 
+3) Copy the output from the previous point inside the GitHub secret key AZURE_CREDENTIALS: 
 {
   "clientId": "658ca1e0-8dc9-459e-bf9b-aa7c4fe10d57",
   "clientSecret": "9F._I904ZJo9UZBmEAeb9_FgFENTrdfilp",
