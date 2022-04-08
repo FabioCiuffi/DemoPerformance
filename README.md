@@ -1,28 +1,39 @@
 # DemoPerformance
-Follow the instructions to prepare the environment to run the resource creation pipeline
-Access your azure subscription with administrative credentials
 
-1) Create a resource group that will contain the resources that will be generated
-https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest
+Follow the instructions to prepare the environment before start the pipeline.
+NOTE: Access your azure subscription with "administrative credentials"
+
+1) Create a resource group that will contain the resources that will be generated 
 
 Sample: 
 az group create -l "switzerlandnorth" -n "STU"
 
-2) Create a management identity and assign the collaborator role to the group created in the previous step. Save the statement output in Notepad for use in the next step
-https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
+Reference: https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest
+
+2) Create a management identity and assign the owner role to the group created in the previous step. Save the statement output in Notepad for use in the next step
 
 Sample 
 az ad sp create-for-rbac --name "STU" --role owner --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
 
-3) Copy the output from the previous point inside the GitHub secret key AZURE_CREDENTIALS: 
+Reference: https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
+
+3) Copy the full output from the previous step inside the GitHub secret key AZURE_CREDENTIALS. You can find AZURE_CREDENTIALS in GitHub "Setting-->Secret-->Actions"
+
+Sample
 {
   "clientId": "658ca1e0-8dc9-459e-bf9b-aa7c4fe10d57",
-  "clientSecret": "9F._I904ZJo9UZBmEAeb9_FgFENTrdfilp",
+  "clientSecret": "bhu9zkYrWae7bnnYhQFIh7SKLCyv6_h.pj",
   "subscriptionId": "744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e",
   "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+  "resourceManagerEndpointUrl": "https://management.azure.com/",
+  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+  "galleryEndpointUrl": "https://gallery.azure.com/",
+  "managementEndpointUrl": "https://management.core.windows.net/"
 }
 
-4) Modify file: .github\workflows\main.yml
+4) Customize resources names file with: .github\workflows\main.yml
 
 Customize value for following keys: 
   AZUREAPPLICATIONINSIGHTSNAME:   "STUApplicationInsights"
@@ -34,10 +45,8 @@ Customize value for following keys:
   AZURELOGANALYTICSWORKSPACENAME: "STULogAnalyticsWorkspace"
   AZURELOADTESTINGNAME:           "STUAzureLoadTesting"
 
-
-
 ============================================================
-Documentation
+Other references
 
 https://docs.microsoft.com/en-us/azure/chaos-studio/chaos-studio-tutorial-aks-portal#set-up-chaos-mesh-on-your-aks-cluster
 
