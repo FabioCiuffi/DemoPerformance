@@ -1,20 +1,17 @@
 # DemoPerformance
 # Follow instruction for preparare environment
 
-1)
-Create a resource group under subscription 
+1) Create a resource group under subscription 
 https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest
 
 az group create -l "switzerlandnorth" -n "STU"
 
-2)
-Create a manage identiti and assign contributor role to group
+2) Create a manage identiti and assign contributor role to group
 https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
 
 az ad sp create-for-rbac --name "STU" --role contributor --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
 
-3)
-Save output into notepad to set GitHub secret key AZURE_CREDENTIALS: 
+3) Save output into notepad to set GitHub secret key AZURE_CREDENTIALS: 
 {
   "clientId": "658ca1e0-8dc9-459e-bf9b-aa7c4fe10d57",
   "clientSecret": "9F._I904ZJo9UZBmEAeb9_FgFENTrdfilp",
@@ -22,8 +19,7 @@ Save output into notepad to set GitHub secret key AZURE_CREDENTIALS:
   "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
 }
 
-4)
-Modify file: .github\workflows\main.yml
+4) Modify file: .github\workflows\main.yml
 
 Customize value for following keys: 
   AZUREAPPLICATIONINSIGHTSNAME:   "STUApplicationInsights"
