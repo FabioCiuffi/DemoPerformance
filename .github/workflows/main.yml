@@ -3,14 +3,14 @@ name: CI
 # This is a basic workflow to help you get started with Actions
 # Global Variables
 env:
-  AZUREAPPLICATIONINSIGHTSNAME:   "STUApplicationInsights"
-  CONTAINERREGISTRYNAME:          "STUContainerRegistry"
-  CONTAINERREGISTRYNAMELOWER:     "stucontainerregistry"
-  REPOSITORYNAME:                 "sturepository"
-  APPNAME:                        "stu"
-  KUBERNETESSERVICENAME:          "STUKubernetesService"
-  AZURELOGANALYTICSWORKSPACENAME: "STULogAnalyticsWorkspace"
-  AZURELOADTESTINGNAME:           "STUAzureLoadTesting"
+  AZUREAPPLICATIONINSIGHTSNAME:   "STU3ApplicationInsights"
+  CONTAINERREGISTRYNAME:          "STU3ContainerRegistry"
+  CONTAINERREGISTRYNAMELOWER:     "stu3containerregistry"
+  REPOSITORYNAME:                 "stu3repository"
+  APPNAME:                        "stu3"
+  KUBERNETESSERVICENAME:          "STU3KubernetesService"
+  AZURELOGANALYTICSWORKSPACENAME: "STU3LogAnalyticsWorkspace"
+  AZURELOADTESTINGNAME:           "STU3AzureLoadTesting"
 
 # Controls when the workflow will run
 on:
