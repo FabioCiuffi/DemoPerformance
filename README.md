@@ -12,11 +12,7 @@ az group create -l "switzerlandnorth" -n "STU"
 https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
 
 Sample
-az ad sp create-for-rbac --name "STU" --role contributor --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
-
-az ad sp create-for-rbac --name "STU2" --role owner --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
-
-
+az ad sp create-for-rbac --name "STU" --role owner --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
 
 3) Copy the output from the previous point inside the GitHub secret key AZURE_CREDENTIALS: 
 {
