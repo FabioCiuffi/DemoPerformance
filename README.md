@@ -14,6 +14,10 @@ https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=
 Sample
 az ad sp create-for-rbac --name "STU" --role contributor --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
 
+az ad sp create-for-rbac --name "STU2" --role owner --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
+
+
+
 3) Copy the output from the previous point inside the GitHub secret key AZURE_CREDENTIALS: 
 {
   "clientId": "658ca1e0-8dc9-459e-bf9b-aa7c4fe10d57",
