@@ -11,7 +11,7 @@ az group create -l "switzerlandnorth" -n "STU"
 2) Create a management identity and assign the collaborator role to the group created in the previous step. Save the statement output in Notepad for use in the next step
 https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
 
-Sample
+Sample 
 az ad sp create-for-rbac --name "STU" --role owner --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
 
 3) Copy the output from the previous point inside the GitHub secret key AZURE_CREDENTIALS: 
