@@ -89,7 +89,7 @@ jobs:
           sleep 5
           #az aks update -n "STUKubernetesService" -g "STU" --attach-acr "STUContainerRegistry"
 
-          az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" --attach-acr "${{ env.CONTAINERREGISTRYNAME }}"
+          #az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" --attach-acr "${{ env.CONTAINERREGISTRYNAME }}"
 
       # Deploy Container registry image to Kubernetes service 
       - name: Deploy Container registry image to Kubernetes service
