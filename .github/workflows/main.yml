@@ -150,10 +150,9 @@ jobs:
       - name: 'Create Azure Load Test'
         uses: azure/load-testing@v1
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroup: ${{ secrets.AZURE_RG }}
-          loadTestConfigFile: ./Bicep/ALT/config.yaml
           loadTestResource: "${{ env.AZURELOADTESTINGNAME }}"
+          loadTestConfigFile: ./Bicep/ALT/config.yaml
           # secrets: |
           #   [
           #       # {
