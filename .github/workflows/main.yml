@@ -154,17 +154,17 @@ jobs:
           resourceGroup: ${{ secrets.AZURE_RG }}
           loadTestConfigFile: ./Bicep/ALT/config.yaml
           loadTestResource: "${{ env.AZURELOADTESTINGNAME }}"
-          secrets: |
-            [
-                # {
-                # "name": "<Name of the secret>",
-                # "value": "${{ secrets.MY_SECRET1 }}",
-                # },
-                # {
-                # "name": "<Name of the secret>",
-                # "value": "${{ secrets.MY_SECRET2 }}",
-                # }
-            ]
+          # secrets: |
+          #   [
+          #       # {
+          #       # "name": "<Name of the secret>",
+          #       # "value": "${{ secrets.MY_SECRET1 }}",
+          #       # },
+          #       # {
+          #       # "name": "<Name of the secret>",
+          #       # "value": "${{ secrets.MY_SECRET2 }}",
+          #       # }
+          #   ]
           env: |
             [
                 {
