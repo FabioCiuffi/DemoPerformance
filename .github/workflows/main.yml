@@ -169,7 +169,7 @@ jobs:
           env: |
             [
                 {
-                "name": "HTTPSamplerDomain",
+                "name": "webapp",
                 "value": "20.203.224.244"
                 }
             ]

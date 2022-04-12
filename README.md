@@ -83,3 +83,5 @@ https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-c
 https://docs.microsoft.com/en-us/azure/load-testing/tutorial-cicd-github-actions#define-test-passfail-criteria
 
 https://stackoverflow.com/questions/57877200/how-can-i-pass-a-variable-group-in-jmeter-using-azure-pipeline
+
+https://docs.microsoft.com/en-us/azure/load-testing/how-to-parameterize-load-tests
