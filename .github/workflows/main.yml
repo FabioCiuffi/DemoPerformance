@@ -103,7 +103,9 @@ jobs:
           sleep 15
           cd src/helloworld-service/helloworld-chart
           helm upgrade ${{ env.APPNAME }} . --install --set image.repository=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }} --set image.tag=v1 --set app.name=${{ env.APPNAME }}
-          ${{ env.CLUSTERIP }}="$(kubectl get service "nginx-ingress-nginx-controller" -n default -o=jsonpath="{.status.loadBalancer.ingress[0].ip}")"
+          echo ${{env.CLUSTERIP}}=$(kubectl get service "nginx-ingress-nginx-controller" -n default -o=jsonpath="{.status.loadBalancer.ingress[0].ip}") >> $GITHUB_ENV"
+          
+
 
       # Deploy Bicep file Log Analytics workspace
       - name: Deploy Bicep file Log Analytics workspace
