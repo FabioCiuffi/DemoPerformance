@@ -79,3 +79,7 @@ https://docs.microsoft.com/en-us/cli/azure/acr/credential?view=azure-cli-latest#
 https://docs.microsoft.com/en-us/azure/aks/internal-lb#create-an-internal-load-balancer
 
 https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-cli
+
+https://docs.microsoft.com/en-us/azure/load-testing/tutorial-cicd-github-actions#define-test-passfail-criteria
+
+https://stackoverflow.com/questions/57877200/how-can-i-pass-a-variable-group-in-jmeter-using-azure-pipeline
