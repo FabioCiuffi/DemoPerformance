@@ -78,3 +78,4 @@ https://docs.microsoft.com/en-us/cli/azure/acr/credential?view=azure-cli-latest#
 
 https://docs.microsoft.com/en-us/azure/aks/internal-lb#create-an-internal-load-balancer
 
+https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-cli
