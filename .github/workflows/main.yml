@@ -11,6 +11,7 @@ env:
   KUBERNETESSERVICENAME:          "STUKubernetesService"
   AZURELOGANALYTICSWORKSPACENAME: "STULogAnalyticsWorkspace"
   AZURELOADTESTINGNAME:           "STUAzureLoadTesting"
+  CLUSTERIP:                      ""        
 
 # Controls when the workflow will run
 on:
@@ -33,6 +34,9 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Runs a single command using the runners shell
+      - name: 'az version'
+        run: az version
 
       # Checkout last version code from Main branch
       - name: Checkout last version code from Main branch
@@ -44,109 +48,83 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # # Deploy Bicep file Application Insights 
-      # - name: Deploy Bicep file Application Insights 
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/AAI/main.bicep
-      #     parameters: name="${{ env.AZUREAPPLICATIONINSIGHTSNAME }}" location="westeurope"
-      #     failOnStdErr: false
+      # Deploy Bicep file Application Insights 
+      - name: Deploy Bicep file Application Insights 
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/AAI/main.bicep
+          parameters: name="${{ env.AZUREAPPLICATIONINSIGHTSNAME }}" location="westeurope"
+          failOnStdErr: false
 
-      # # Deploy Bicep file Container registry
-      # - name: Deploy Bicep file Container registry
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ACR/main.bicep
-      #     parameters: name="${{ env.CONTAINERREGISTRYNAME }}"
-      #     failOnStdErr: false
+      # Deploy Bicep file Container registry
+      - name: Deploy Bicep file Container registry
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ACR/main.bicep
+          parameters: name="${{ env.CONTAINERREGISTRYNAME }}"
+          failOnStdErr: false
 
-      # # 'Build and push image to Azure Container Registry' 
-      # - name: 'Build and push image to Azure Container Registry'
-      #   run: |
-      #     az acr login --name "${{ env.CONTAINERREGISTRYNAMELOWER }}"
-      #     docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
-      #     docker push ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
+      # 'Build and push image to Azure Container Registry' 
+      - name: 'Build and push image to Azure Container Registry'
+        run: |
+          az acr login --name "${{ env.CONTAINERREGISTRYNAMELOWER }}"
+          docker build src/helloworld-service/HelloWorld.API/ -t ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
+          docker push ${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1
 
-      # # Deploy Bicep file Kubernetes service
-      # - name: Deploy Bicep file Kubernetes service
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/AKS/main.bicep
-      #     parameters: name="${{ env.KUBERNETESSERVICENAME }}"
-      #     failOnStdErr: false
+      # Deploy Bicep file Kubernetes service
+      - name: Deploy Bicep file Kubernetes service
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/AKS/main.bicep
+          parameters: name="${{ env.KUBERNETESSERVICENAME }}"
+          failOnStdErr: false
 
-      # # Assign role to Kubernetes service user to access Container Registry image
-      # # https://docs.microsoft.com/it-it/azure/aks/cluster-container-registry-integration?tabs=azure-cli
-      # # https://docs.microsoft.com/en-us/answers/questions/536758/how-to-allow-aks-cluster-access-to-azure-container.html
-      # - name: Assign role to Kubernetes service user to access Container Registry image 
-      #   run: |
-      #     sleep 15
-      #     az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" --attach-acr "${{ env.CONTAINERREGISTRYNAME }}"
+      # Assign role to Kubernetes service user to access Container Registry image
+      # https://docs.microsoft.com/it-it/azure/aks/cluster-container-registry-integration?tabs=azure-cli
+      # https://docs.microsoft.com/en-us/answers/questions/536758/how-to-allow-aks-cluster-access-to-azure-container.html
+      - name: Assign role to Kubernetes service user to access Container Registry image 
+        run: |
+          sleep 15
+          az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" --attach-acr "${{ env.CONTAINERREGISTRYNAME }}"
 
-      # # Deploy Container registry image to Kubernetes service 
-      # - name: Deploy Container registry image to Kubernetes service
-      #   run: |
-      #     az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" 
-      #     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-      #     helm repo update
-      #     helm upgrade nginx ingress-nginx/ingress-nginx --install
-      #     sleep 15
-      #     cd src/helloworld-service/helloworld-chart
-      #     helm upgrade ${{ env.APPNAME }} . --install --set image.repository=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }} --set image.tag=v1 --set app.name=${{ env.APPNAME }}
+      # Deploy Container registry image to Kubernetes service 
+      - name: Deploy Container registry image to Kubernetes service
+        run: |
+          az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" 
+          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          helm repo update
+          helm upgrade nginx ingress-nginx/ingress-nginx --install
+          sleep 15
+          cd src/helloworld-service/helloworld-chart
+          helm upgrade ${{ env.APPNAME }} . --install --set image.repository=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }} --set image.tag=v1 --set app.name=${{ env.APPNAME }}
 
-      # Runs a single command using the runners shell
+          ${{ env.CLUSTERIP }}=$(kubectl get service "nginx-ingress-nginx-controller" -n default -o=jsonpath="{.status.loadBalancer.ingress[0].ip}")          
 
-      # Deploy Container registry image to Kubernetes service
-      # - name: Deploy Container registry image to Kubernetes service
-      #   run: |
-      #     # Get ACR credentials
-      #     dockerServer=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io
-      #     dockerUsername=$(az acr credential show --name ${{ env.CONTAINERREGISTRYNAMELOWER }} --query username | tr -d '"')
-      #     dockerPassword=$(az acr credential show --name ${{ env.CONTAINERREGISTRYNAMELOWER }} --query passwords[0].value | tr -d '"')
-      #     dockerEmail=docker@localhost
+      # Deploy Bicep file Log Analytics workspace
+      - name: Deploy Bicep file Log Analytics workspace
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALA/main.bicep
+          parameters: name="${{ env.AZURELOGANALYTICSWORKSPACENAME }}"  location="westeurope"
+          failOnStdErr: false
 
-      #     az aks get-credentials -n "${{ env.KUBERNETESSERVICENAME }}" -g  "${{ secrets.AZURE_RG }}"
-
-      #     # Setup Secret for registry credentials
-      #     #kubectl create secret docker-registry regcred \
-      #     #    --docker-server=$dockerServer \
-      #     #    --docker-username=$dockerUsername \
-      #     #    --docker-password=$dockerPassword \
-      #     #    --docker-email=$dockerEmail
-          
-      #     # az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g ${{ secrets.AZURE_RG }} --attach-acr "${{ env.CONTAINERREGISTRYNAMELOWER }}"
-
-      #     sed --in-place -e 's|APPNAME|${{ env.APPNAME }}|g' -e 's|IMAGENAME|${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }}:v1|g' deployment.yaml
-      #     kubectl apply -f deployment.yaml
-      #     kubectl get pods
-
-      # # Deploy Bicep file Log Analytics workspace
-      # - name: Deploy Bicep file Log Analytics workspace
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALA/main.bicep
-      #     parameters: name="${{ env.AZURELOGANALYTICSWORKSPACENAME }}"  location="westeurope"
-      #     failOnStdErr: false
-
-      # # Deploy Bicep file Azure Load Testing
-      # - name: Deploy Bicep file Azure Load Testing
-      #   uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ secrets.AZURE_RG }}
-      #     template: ./Bicep/ALT/main.bicep
-      #     parameters: name="${{ env.AZURELOADTESTINGNAME }}" location="northeurope"
-      #     failOnStdErr: false
-
-
+      # Deploy Bicep file Azure Load Testing
+      - name: Deploy Bicep file Azure Load Testing
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./Bicep/ALT/main.bicep
+          parameters: name="${{ env.AZURELOADTESTINGNAME }}" location="northeurope"
+          failOnStdErr: false
 
       # https://github.com/Azure/load-testing
       - name: 'Create Azure Load Test'
@@ -155,31 +133,10 @@ jobs:
           resourceGroup: ${{ secrets.AZURE_RG }}
           loadTestResource: "${{ env.AZURELOADTESTINGNAME }}"
           loadTestConfigFile: ./Bicep/ALT/config.yaml
-          # # secrets: |
-          # #   [
-          # #       # {
-          # #       # "name": "<Name of the secret>",
-          # #       # "value": "${{ secrets.MY_SECRET1 }}",
-          # #       # },
-          # #       # {
-          # #       # "name": "<Name of the secret>",
-          # #       # "value": "${{ secrets.MY_SECRET2 }}",
-          # #       # }
-          # #   ]
           env: |
             [
                 {
                 "name": "webapp",
-                "value": "20.203.224.244"
+                "value": "${{ env.CLUSTERIP }}"
                 }
             ]
-
-      # # Runs a single command using the runners shell
-      # - name: Run a one-line script
-      #   run: az version
-
-      # # Runs a set of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
