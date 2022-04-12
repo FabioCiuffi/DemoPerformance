@@ -3,14 +3,14 @@ name: CI
 # This is a basic workflow to help you get started with Actions
 # Global Variables
 env:
-  AZUREAPPLICATIONINSIGHTSNAME:   "STU3ApplicationInsights"
-  CONTAINERREGISTRYNAME:          "STU3ContainerRegistry"
-  CONTAINERREGISTRYNAMELOWER:     "stu3containerregistry"
-  REPOSITORYNAME:                 "stu3repository"
-  APPNAME:                        "stu3"
-  KUBERNETESSERVICENAME:          "STU3KubernetesService"
-  AZURELOGANALYTICSWORKSPACENAME: "STU3LogAnalyticsWorkspace"
-  AZURELOADTESTINGNAME:           "STU3AzureLoadTesting"
+  AZUREAPPLICATIONINSIGHTSNAME:   "STUApplicationInsights"
+  CONTAINERREGISTRYNAME:          "STUContainerRegistry"
+  CONTAINERREGISTRYNAMELOWER:     "stucontainerregistry"
+  REPOSITORYNAME:                 "sturepository"
+  APPNAME:                        "stu"
+  KUBERNETESSERVICENAME:          "STUKubernetesService"
+  AZURELOGANALYTICSWORKSPACENAME: "STULogAnalyticsWorkspace"
+  AZURELOADTESTINGNAME:           "STUAzureLoadTesting"
 
 # Controls when the workflow will run
 on:
@@ -86,7 +86,7 @@ jobs:
       # https://docs.microsoft.com/en-us/answers/questions/536758/how-to-allow-aks-cluster-access-to-azure-container.html
       - name: Assign role to Kubernetes service user to access Container Registry image 
         run: |
-          sleep 10
+          sleep 6
           az aks update -n "${{ env.KUBERNETESSERVICENAME }}" -g "${{ secrets.AZURE_RG }}" --attach-acr "${{ env.CONTAINERREGISTRYNAME }}"
 
       # Deploy Container registry image to Kubernetes service 
@@ -96,7 +96,7 @@ jobs:
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           helm repo update
           helm upgrade nginx ingress-nginx/ingress-nginx --install
-          sleep 10
+          sleep 6
           cd src/helloworld-service/helloworld-chart
           helm upgrade ${{ env.APPNAME }} . --install --set image.repository=${{ env.CONTAINERREGISTRYNAMELOWER }}.azurecr.io/${{ env.REPOSITORYNAME }} --set image.tag=v1 --set app.name=${{ env.APPNAME }}
 
