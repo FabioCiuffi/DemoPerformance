@@ -136,15 +136,17 @@ jobs:
       #     parameters: name="${{ env.AZURELOGANALYTICSWORKSPACENAME }}"  location="westeurope"
       #     failOnStdErr: false
 
-      # Deploy Bicep file Azure Load Testing
-      - name: Deploy Bicep file Azure Load Testing
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./Bicep/ALT/main.bicep
-          parameters: name="${{ env.AZURELOADTESTINGNAME }}" location="northeurope"
-          failOnStdErr: false
+      # # Deploy Bicep file Azure Load Testing
+      # - name: Deploy Bicep file Azure Load Testing
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ secrets.AZURE_RG }}
+      #     template: ./Bicep/ALT/main.bicep
+      #     parameters: name="${{ env.AZURELOADTESTINGNAME }}" location="northeurope"
+      #     failOnStdErr: false
+
+
 
       # https://github.com/Azure/load-testing
       - name: 'Create Azure Load Test'
@@ -153,24 +155,24 @@ jobs:
           resourceGroup: ${{ secrets.AZURE_RG }}
           loadTestResource: "${{ env.AZURELOADTESTINGNAME }}"
           loadTestConfigFile: ./Bicep/ALT/config.yaml
-          # secrets: |
+          # # secrets: |
+          # #   [
+          # #       # {
+          # #       # "name": "<Name of the secret>",
+          # #       # "value": "${{ secrets.MY_SECRET1 }}",
+          # #       # },
+          # #       # {
+          # #       # "name": "<Name of the secret>",
+          # #       # "value": "${{ secrets.MY_SECRET2 }}",
+          # #       # }
+          # #   ]
+          # env: |
           #   [
-          #       # {
-          #       # "name": "<Name of the secret>",
-          #       # "value": "${{ secrets.MY_SECRET1 }}",
-          #       # },
-          #       # {
-          #       # "name": "<Name of the secret>",
-          #       # "value": "${{ secrets.MY_SECRET2 }}",
-          #       # }
+          #       {
+          #       "name": "HTTPSamplerDomain",
+          #       "value": "20.203.224.244",
+          #       }
           #   ]
-          env: |
-            [
-                {
-                "name": "HTTPSamplerDomain",
-                "value": "20.203.224.244",
-                }
-            ]
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
