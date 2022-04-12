@@ -4,3 +4,4 @@ description: Test1
 engineInstances: 10
 failureCriteria:
 - avg(response_time_ms) > 300
+
