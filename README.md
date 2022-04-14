@@ -6,14 +6,14 @@ NOTE: Access your azure subscription with "administrative credentials"
 1) Create a resource group that will contain the resources that will be generated 
 
 Sample: 
-az group create -l "switzerlandnorth" -n "STU"
+az group create -l "switzerlandnorth" -n "DEMO"
 
 Reference: https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest
 
 2) Create a management identity and assign the owner role to the group created in the previous step. Save the statement output in Notepad for use in the next step
 
 Sample 
-az ad sp create-for-rbac --name "STU" --role owner --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/STU --sdk-auth
+az ad sp create-for-rbac --name "DEMO" --role owner --scopes /subscriptions/744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e/resourceGroups/DEMO --sdk-auth
 
 Reference: https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux
 
@@ -21,10 +21,10 @@ Reference: https://docs.microsoft.com/en-us/azure/developer/github/connect-from-
 
 Sample
 {
-  "clientId": "658ca1e0-8dc9-459e-bf9b-aa7c4fe10d57",
-  "clientSecret": "bhu9zkYrWae7bnnYhQFIh7SKLCyv6_h.pj",
-  "subscriptionId": "744dd6eb-f4a1-4ff3-bc6b-ecec2fb8c22e",
-  "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+  "clientId": "651ca1e0-XXXX-XXXX-XXXX-aa7c11e10a57",
+  "clientSecret": "QOFEWIJFQewfEWFewqFewFewfEWf34_h.pj",
+  "subscriptionId": "74LVd6eb-XXXX-XXXX-XXXX-ecec2fm3c22e",
+  "tenantId": "72f988bf-XXXX-XXXX-XXXX-2d7cd011db47",
   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
   "resourceManagerEndpointUrl": "https://management.azure.com/",
   "activeDirectoryGraphResourceId": "https://graph.windows.net/",
@@ -36,14 +36,14 @@ Sample
 4) Customize resources names file with: .github\workflows\main.yml
 
 Customize value for following keys: 
-  AZUREAPPLICATIONINSIGHTSNAME:   "STUApplicationInsights"
-  CONTAINERREGISTRYNAME:          "STUContainerRegistry"
-  CONTAINERREGISTRYNAMELOWER:     "stucontainerregistry"
-  REPOSITORYNAME:                 "sturepository"
-  APPNAME:                        "stu"
-  KUBERNETESSERVICENAME:          "STUKubernetesService"
-  AZURELOGANALYTICSWORKSPACENAME: "STULogAnalyticsWorkspace"
-  AZURELOADTESTINGNAME:           "STUAzureLoadTesting"
+  AZUREAPPLICATIONINSIGHTSNAME:   "DEMOApplicationInsights"
+  CONTAINERREGISTRYNAME:          "DEMOContainerRegistry"
+  CONTAINERREGISTRYNAMELOWER:     "democontainerregistry"
+  REPOSITORYNAME:                 "demorepository"
+  APPNAME:                        "demo"
+  KUBERNETESSERVICENAME:          "DEMOKubernetesService"
+  AZURELOGANALYTICSWORKSPACENAME: "DEMOLogAnalyticsWorkspace"
+  AZURELOADTESTINGNAME:           "DEMOAzureLoadTesting"
 
 ============================================================
 Other references
